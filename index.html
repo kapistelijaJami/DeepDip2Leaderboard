@@ -20,28 +20,23 @@ async function updateTable() {
 	
 	const table = document.getElementById("table");
 	for (let row of json) {
-		table.appendChild(getRow(row));
+		addRow(table, row);
 	}
 }
 
-function getRow(res) {
-	const tr = document.createElement("tr");
+function addRow(table, res) {
+	const tr = table.insertRow(-1);
 	
-	const rank = document.createElement("td");
+	const rank = tr.insertCell(0);
 	rank.innerText = res.rank;
-	const name = document.createElement("td");
+	const name = tr.insertCell(1);
 	name.innerText = res.name;
-	const height = document.createElement("td");
+	const height = tr.insertCell(2);
 	height.innerText = parseInt(res.height) + " m";
-	
-	tr.appendChild(rank);
-	tr.appendChild(name);
-	tr.appendChild(height);
-	return tr;
 }
 </script>
 
-<div class="table">
+<div class="container">
 	<table id="table">
 		<tr>
 			<th>Rank</th>
