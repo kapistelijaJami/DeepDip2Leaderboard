@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="main.css">
+</head>
+
+<body>
+
+<script>
+updateTable();
+
+async function updateTable() {
+	const res = await fetch("https://api.codetabs.com/v1/proxy/?quest=https://dips-plus-plus.xk.io/leaderboard/global"); //API doesn't have cors allow headers so we use free proxy.
+	const json = await res.json();
+	
+	if (json[0].rank !== 1) { //There's a bug in the API that it sometimes returns weird data
+		updateTable();
+		return;
+	}
+	
+	const table = document.getElementById("table");
+	for (let row of json) {
+		addRow(table, row);
+	}
+}
+
+function addRow(table, res) {
+	const tr = table.insertRow(-1);
+	
+	const rank = tr.insertCell(0);
+	rank.innerText = res.rank;
+	const name = tr.insertCell(1);
+	name.innerText = res.name;
+	const height = tr.insertCell(2);
+	height.innerText = parseInt(res.height) + " m";
+}
+</script>
+
+<div class="container">
+	<table id="table">
+		<tr>
+			<th>Rank</th>
+			<th>Name</th>
+			<th>Height</th>
+		</tr>
+	</table>
+</div>
+
+</body>
+</html>
