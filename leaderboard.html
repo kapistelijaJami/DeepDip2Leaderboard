@@ -8,13 +8,18 @@
 
 <script>
 updateTable();
+let tryCount = 0;
 
 async function updateTable() {
 	const res = await fetch("https://api.codetabs.com/v1/proxy/?quest=https://dips-plus-plus.xk.io/leaderboard/global"); //API doesn't have cors allow headers so we use free proxy.
 	const json = await res.json();
 	
 	if (json[0].rank !== 1) { //There's a bug in the API that it sometimes returns weird data
-		updateTable();
+		if (tryCount >= 10) {
+			return;
+		}
+		window.setTimeout(updateTable, 100); //Apparently sometimes it takes a while to fix, so added delay and counter to stop it from requesting it too many times.
+		tryCount++;
 		return;
 	}
 	
